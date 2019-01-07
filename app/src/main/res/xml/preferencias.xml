@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Datos Usuario">
+        <EditTextPreference
+            android:dialogTitle="Introduce email"
+            android:key="userEmail"
+            android:summary="Email del usuario"
+            android:title="Email" />
+        <EditTextPreference
+            android:dialogTitle="Introduce contraseña"
+            android:key="userPsw"
+            android:summary="Contraseña del usuario"
+            android:title="Contraseña" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Audio">
+        <CheckBoxPreference
+            android:key="activeSound"
+            android:summary="Activar/Desactivar audio"
+            android:title="Activar audio" />
+        <ListPreference
+            android:key="actualSound"
+            android:summary="Sonido a escuchar"
+            android:title="Sonido"
+            android:entries="@array/aSounds"
+            android:entryValues="@array/aSoundsData"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="GPS">
+        <CheckBoxPreference
+            android:key="activeGPS"
+            android:summary="Activar/Desactivar GPS"
+            android:title="Activar GPS" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Sincronización">
+        <CheckBoxPreference
+            android:key="activeSync"
+            android:summary="Activar/Desactivar Sincronización"
+            android:title="Activar Sincronización" />
+    </PreferenceCategory>
+</PreferenceScreen>
