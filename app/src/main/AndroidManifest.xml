@@ -25,8 +25,11 @@
         </activity>
         <activity
             android:name=".PreferenciasActivity"
-            android:label="@string/preference_name">
-        </activity>
+            android:label="@string/preference_name"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
