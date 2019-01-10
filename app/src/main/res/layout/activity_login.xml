@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Escriba su Email"
                     android:inputType="textEmailAddress"
+                    android:text="jmesparcia@iessanvicente.com"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -55,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Escriba su contraseña"
+                    android:text="(Esparcia90)"
                     android:imeActionId="6"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
@@ -72,7 +74,7 @@
                     android:id="@+id/tRePassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Repita su Contraseña"
+                    android:text="(Esparcia90)"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -88,7 +90,7 @@
                     android:id="@+id/tNombreCompleto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nombre y apellidos"
+                    android:text="Jose Esparcia"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:visibility="invisible"/>
