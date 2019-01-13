@@ -13,14 +13,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string-array name="aSounds">
-        <item>Canción 1</item>
-        <item>Canción 2</item>
-    </string-array>
-    <string-array name="aSoundsData">
-        <item>musica.ogg</item>
-        <item>sound37.ogg</item>
-    </string-array>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -28,4 +20,13 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <!-- Strings to Perfil Activity -->
+    <string name="title_activity_perfil">Perfil</string>
+    <string name="perfil_description_header">Background con color corporativo</string>
+    <string name="perfil_imagen">Foto de perfil del usuario</string>
+    <string name="perfil_btn_edit">Botón para guardar los cambios en el perfil</string>
+    <string name="perfil_text_name">Nombre</string>
+    <string name="perfil_text_email">Email</string>
+    <string name="perfil_text_psw">Contraseña</string>
+    <string name="perfil_text_phone">Teléfono</string>
 </resources>
