@@ -1,6 +1,10 @@
 package es.iessanvicente.eventos.myeventslistapp;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -12,9 +16,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
+    //Declaracion de variables
+    ListView listadoEventos;
+    ArrayList<evento> lEventos;
+    SQLiteDatabase db;
+    String rutaApp;
+    String rutaDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +36,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,6 +45,30 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
+        rutaDB = rutaApp + "eventosDB";
+        listadoEventos = (ListView) findViewById(R.id.lvEventos);
+        lEventos = new ArrayList<evento>();
+
+        db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS eventos(ID INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, direccion VARCHAR, fecha_hora VARCHAR, descripcion VARCHAR, activo INT);");
+        Cursor fila = db.rawQuery("SELECT nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
+        if(fila.moveToFirst())
+        {
+            fila = db.rawQuery("SELECT nombre, direccion, fecha, hora, descripcion, activo FROM eventos", null);
+            evento evento = new evento(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getInt(4));
+            lEventos.add(evento);
+            while(fila.moveToNext())
+            {
+                evento e = new evento(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getInt(4));
+                lEventos.add(evento);
+            }
+        }
+        db.close();
+
+     /*   ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ranking);
+        lv1.setAdapter(adapter);*/
     }
 
     @Override
@@ -67,8 +96,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.itemNuevaCita)
+        {
+            Intent NuevaCita = new Intent(getApplicationContext(), NuevaCitaActivity.class);
+            startActivity(NuevaCita);
         }
 
         return super.onOptionsItemSelected(item);
