@@ -1,15 +1,26 @@
 package es.iessanvicente.eventos.myeventslistapp;
 
-public class evento
+import java.io.Serializable;
+
+public class evento implements Serializable
 {
     /*
     * DECLARACION DE VARIBALES CON SUS GET Y SET
     * */
+    int id;
     String nombre;
     String direccion;
     String fecha_hora;
     String descripcion;
     int activo;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -63,4 +74,18 @@ public class evento
         this.activo = activo;
     }
 
+    public evento(int id, String nombre, String direccion, String fecha_hora, String descripcion, int activo)
+    {
+        this.id = id;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.fecha_hora = fecha_hora;
+        this.descripcion = descripcion;
+        this.activo = activo;
+    }
+
+    public String DatosEvento()
+    {
+        return getId()+". "+ getNombre()+" \n "+getFecha_hora();
+    }
 }

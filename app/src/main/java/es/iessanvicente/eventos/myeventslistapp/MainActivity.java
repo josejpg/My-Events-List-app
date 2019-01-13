@@ -1,5 +1,6 @@
 package es.iessanvicente.eventos.myeventslistapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -25,10 +27,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 {
     //Declaracion de variables
     ListView listadoEventos;
-    ArrayList<evento> lEventos;
+    ArrayList<String> lDatosEventos;
     SQLiteDatabase db;
     String rutaApp;
     String rutaDB;
+   // AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +52,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
         rutaDB = rutaApp + "eventosDB";
         listadoEventos = (ListView) findViewById(R.id.lvEventos);
-        lEventos = new ArrayList<evento>();
+        lDatosEventos = new ArrayList<String>();
+        GeneraListaCitas();
+    }
 
-        db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS eventos(ID INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, direccion VARCHAR, fecha_hora VARCHAR, descripcion VARCHAR, activo INT);");
-        Cursor fila = db.rawQuery("SELECT nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
-        if(fila.moveToFirst())
+    private void GeneraListaCitas()
+    {
+        try
         {
-            fila = db.rawQuery("SELECT nombre, direccion, fecha, hora, descripcion, activo FROM eventos", null);
-            evento evento = new evento(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getInt(4));
-            lEventos.add(evento);
-            while(fila.moveToNext())
+            db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS eventos(ID INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, direccion VARCHAR, fecha_hora VARCHAR, descripcion VARCHAR, activo INT);");
+            Cursor fila = db.rawQuery("SELECT id, nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
+            if (fila.moveToFirst())
             {
-                evento e = new evento(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getInt(4));
-                lEventos.add(evento);
+                do
+                {
+                    evento e = new evento(fila.getInt(0),fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4), fila.getInt(5));
+                    lDatosEventos.add(e.DatosEvento());
+                }
+                while (fila.moveToNext());
             }
-        }
-        db.close();
+            db.close();
 
-     /*   ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ranking);
-        lv1.setAdapter(adapter);*/
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lDatosEventos);
+            listadoEventos.setAdapter(adapter);
+            listadoEventos.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                public void onItemClick(AdapterView<?> a, View v, int position, long id)
+                {
+                    //String prueba = (String) a.getAdapter().getItem(position);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            String exc = ex.getMessage();
+        }
     }
 
     @Override
