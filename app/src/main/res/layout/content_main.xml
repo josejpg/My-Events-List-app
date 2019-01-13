@@ -8,9 +8,37 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/email_login_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Listado eventos activos"/>
+
     <ListView
-        android:id="@+id/lvEventos"
+    android:id="@+id/lvEventos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Listado eventos no activos"/>
+
+    <ListView
+        android:id="@+id/lvInactivosEventos"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    </LinearLayout>
 
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

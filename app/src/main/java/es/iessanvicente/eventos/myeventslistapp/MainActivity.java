@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Declaracion de variables
     ListView listadoEventos;
     ArrayList<String> lDatosEventos;
+    ListView listadoEventosInactivos;
+    ArrayList<String> lDatosEventosInactivos;
     SQLiteDatabase db;
     String rutaApp;
     String rutaDB;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rutaDB = rutaApp + "eventosDB";
         listadoEventos = (ListView) findViewById(R.id.lvEventos);
         lDatosEventos = new ArrayList<String>();
+        listadoEventosInactivos = (ListView) findViewById(R.id.lvInactivosEventos);
+        lDatosEventosInactivos = new ArrayList<String>();
     }
 
     private void GeneraListaCitas()
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             lDatosEventos.clear();
             db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
             db.execSQL("CREATE TABLE IF NOT EXISTS eventos(ID INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, direccion VARCHAR, fecha_hora VARCHAR, descripcion VARCHAR, activo INT);");
-            Cursor fila = db.rawQuery("SELECT id, nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
+            Cursor fila = db.rawQuery("SELECT id, nombre, direccion, fecha_hora, descripcion, activo FROM eventos WHERE activo = 1", null);
             if (fila.moveToFirst())
             {
                 do
@@ -72,11 +76,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 while (fila.moveToNext());
             }
+
+            Cursor filaInactivos = db.rawQuery("SELECT id, nombre, direccion, fecha_hora, descripcion, activo FROM eventos WHERE activo = 0", null);
+            if (filaInactivos.moveToFirst())
+            {
+                do
+                {
+                    evento e = new evento(filaInactivos.getInt(0),filaInactivos.getString(1), filaInactivos.getString(2), filaInactivos.getString(3), filaInactivos.getString(4), filaInactivos.getInt(5));
+                    lDatosEventosInactivos.add(e.DatosEvento());
+                }
+                while (filaInactivos.moveToNext());
+            }
             db.close();
 
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lDatosEventos);
             listadoEventos.setAdapter(adapter);
             listadoEventos.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                public void onItemClick(AdapterView<?> a, View v, int position, long id)
+                {
+                    //String prueba = (String) a.getAdapter().getItem(position);
+                }
+            });
+
+            final ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lDatosEventosInactivos);
+            listadoEventosInactivos.setAdapter(adapter2);
+            listadoEventosInactivos.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 public void onItemClick(AdapterView<?> a, View v, int position, long id)
                 {
