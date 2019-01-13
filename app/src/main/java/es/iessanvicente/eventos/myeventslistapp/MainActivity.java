@@ -53,13 +53,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rutaDB = rutaApp + "eventosDB";
         listadoEventos = (ListView) findViewById(R.id.lvEventos);
         lDatosEventos = new ArrayList<String>();
-        GeneraListaCitas();
     }
 
     private void GeneraListaCitas()
     {
         try
         {
+            lDatosEventos.clear();
             db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
             db.execSQL("CREATE TABLE IF NOT EXISTS eventos(ID INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, direccion VARCHAR, fecha_hora VARCHAR, descripcion VARCHAR, activo INT);");
             Cursor fila = db.rawQuery("SELECT id, nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
@@ -130,23 +130,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.itemPerfil)
+        {
             Intent Perfil = new Intent(getApplicationContext(), PerfilActivity.class);
             startActivity(Perfil);
-        } else if (id == R.id.nav_gallery) {
+        }
+        else if (id == R.id.itemPreferencias)
+        {
+            Intent Preferencias = new Intent(getApplicationContext(), PreferenciasActivity.class);
+            startActivity(Preferencias);
+        }
+        else if (id == R.id.itemAyuda)
+        {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        GeneraListaCitas();
+
     }
 }
