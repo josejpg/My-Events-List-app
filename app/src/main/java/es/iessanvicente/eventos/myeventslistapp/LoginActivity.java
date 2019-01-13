@@ -41,6 +41,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -60,8 +62,11 @@ public class LoginActivity extends AppCompatActivity
     EditText password;
     EditText rePassword;
     EditText nombreCompleto;
+    TextView muestraLabelRePass;
+    TextView muestraLabelNombre;
     Button realizaRegistro;
     Button realizaLogin;
+    Button cancelaRegistro;
     SQLiteDatabase db;
     String[] permissions;
     String rutaApp;
@@ -91,10 +96,13 @@ public class LoginActivity extends AppCompatActivity
 
         email = (EditText)findViewById(R.id.tEmail);
         password = (EditText) findViewById(R.id.tPassword);
+        muestraLabelRePass = (TextView) findViewById(R.id.tvRepass);
+        muestraLabelNombre = (TextView) findViewById(R.id.tvNombreApell);
         rePassword =(EditText) findViewById(R.id.tRePassword);
         nombreCompleto = (EditText) findViewById(R.id.tNombreCompleto);
         realizaLogin = (Button) findViewById(R.id.btLogin);
         realizaRegistro = (Button) findViewById(R.id.btRegister);
+        cancelaRegistro = (Button) findViewById(R.id.btCancelarRegistro);
         activaRegistro = 0;
         rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
         rutaDB = rutaApp + "eventosDB";
@@ -106,28 +114,53 @@ public class LoginActivity extends AppCompatActivity
         {
             Intent MenuPrincipal = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(MenuPrincipal);
+            this.finish();
         }
         else
         {
             db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
-            db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(email VARCHAR, password VARCHAR, nombre VARCHAR);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, nombre VARCHAR);");
 
-            realizaLogin.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
+            realizaLogin.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View v)
+                {
                     CompruebaLogin();
                 }
             });
 
-            realizaRegistro.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (activaRegistro == 0) {
+            realizaRegistro.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    if (activaRegistro == 0)
+                    {
+                        muestraLabelRePass.setVisibility(View.VISIBLE);
+                        muestraLabelNombre.setVisibility(View.VISIBLE);
+                        cancelaRegistro.setVisibility(View.VISIBLE);
                         realizaLogin.setVisibility(View.INVISIBLE);
                         rePassword.setVisibility(View.VISIBLE);
                         nombreCompleto.setVisibility(View.VISIBLE);
                         activaRegistro = 1;
-                    } else {
+                    }
+                    else
+                    {
                         RealizaRegistro();
                     }
+                }
+            });
+
+            cancelaRegistro.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    muestraLabelRePass.setVisibility(View.INVISIBLE);
+                    muestraLabelNombre.setVisibility(View.INVISIBLE);
+                    cancelaRegistro.setVisibility(View.INVISIBLE);
+                    realizaLogin.setVisibility(View.VISIBLE);
+                    rePassword.setVisibility(View.INVISIBLE);
+                    nombreCompleto.setVisibility(View.INVISIBLE);
+                    activaRegistro = 0;
                 }
             });
         }
@@ -179,6 +212,9 @@ public class LoginActivity extends AppCompatActivity
         {
             if (RealizaInsertUserBD(String.valueOf(email.getText()), String.valueOf(password.getText()), String.valueOf(rePassword.getText()), String.valueOf(nombreCompleto.getText())))
             {
+                muestraLabelRePass.setVisibility(View.INVISIBLE);
+                muestraLabelNombre.setVisibility(View.INVISIBLE);
+                cancelaRegistro.setVisibility(View.INVISIBLE);
                 realizaLogin.setVisibility(View.VISIBLE);
                 rePassword.setVisibility(View.INVISIBLE);
                 nombreCompleto.setVisibility(View.INVISIBLE);
@@ -197,7 +233,7 @@ public class LoginActivity extends AppCompatActivity
         {
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("Mensaje de ayuda");
-            dialogo1.setMessage("No ha escrito una dirección de email válida o bien ha escrito mal la contraseña.");
+            dialogo1.setMessage("Los datos introducidos son incorrectos.");
             dialogo1.show();
         }
         else
@@ -214,8 +250,10 @@ public class LoginActivity extends AppCompatActivity
                 editor.putBoolean("isLogged", true);
                 editor.putString("email", nombreUsuarioBD);
                 editor.commit();
+                db.close();
                 Intent MenuPrincipal = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(MenuPrincipal);
+                this.finish();
             }
         }
     }
@@ -250,7 +288,7 @@ public class LoginActivity extends AppCompatActivity
         {
             if (validarEmail(email) && validarPassword(password, rePassword) && !nombreCompleto.isEmpty())
             {
-                db.execSQL("INSERT INTO usuarios VALUES('"+email+"','"+password+"','"+nombreCompleto+"');");
+                db.execSQL("INSERT INTO usuarios (email, password, nombre) VALUES('"+email+"','"+password+"','"+nombreCompleto+"');");
                 insertOk = true;
                 CompruebaLogin();
             }
@@ -262,6 +300,7 @@ public class LoginActivity extends AppCompatActivity
         catch (Exception ex)
         {
             insertOk = false;
+            String exce = ex.getMessage();
         }
         return insertOk;
     }
