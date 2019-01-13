@@ -29,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -43,6 +44,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -119,7 +121,7 @@ public class LoginActivity extends AppCompatActivity
         else
         {
             db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
-            db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, nombre VARCHAR);");
+            db.execSQL( "CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar VARCHAR);" );
 
             realizaLogin.setOnClickListener(new View.OnClickListener()
             {
@@ -238,22 +240,32 @@ public class LoginActivity extends AppCompatActivity
         }
         else
         {
+            byte[] data = String.valueOf(password.getText()).getBytes(StandardCharsets.UTF_8);
+            Cursor resultSet = db.rawQuery("SELECT ID, avatar, email, password, name, phone FROM usuarios WHERE email = '"+String.valueOf(email.getText())+"' AND password = '" + Base64.encodeToString(data, Base64.DEFAULT) + "'",null);resultSet.moveToFirst();
+            if(resultSet.getCount() > 0) {
+                resultSet.moveToFirst();
+                User user = new User(
+                        resultSet.getInt(0),
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5)
+                );
 
-            Cursor resultSet = db.rawQuery("Select email, password from usuarios where email = '"+String.valueOf(email.getText())+"'",null);
-            resultSet.moveToFirst();
-            String nombreUsuarioBD = resultSet.getString(0);
-            String password = resultSet.getString(1);
-
-            if (String.valueOf(email.getText()).equals(nombreUsuarioBD) && String.valueOf(email.getText()).equals(nombreUsuarioBD))
-            {
                 SharedPreferences.Editor editor = shared.edit();
                 editor.putBoolean("isLogged", true);
-                editor.putString("email", nombreUsuarioBD);
+                editor.putString("email", user.getEmail());
                 editor.commit();
                 db.close();
                 Intent MenuPrincipal = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(MenuPrincipal);
                 this.finish();
+            }else{
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                dialogo1.setTitle("Mensaje de ayuda");
+                dialogo1.setMessage("El usuario y/o contraseña sonincorrectos.");
+                dialogo1.show();
             }
         }
     }
@@ -286,15 +298,28 @@ public class LoginActivity extends AppCompatActivity
         boolean insertOk = false;
         try
         {
-            if (validarEmail(email) && validarPassword(password, rePassword) && !nombreCompleto.isEmpty())
-            {
-                db.execSQL("INSERT INTO usuarios (email, password, nombre) VALUES('"+email+"','"+password+"','"+nombreCompleto+"');");
-                insertOk = true;
-                CompruebaLogin();
+            if(!validarEmail( email )){
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                dialogo1.setTitle("Email no válido");
+                dialogo1.setMessage("El email " + email + " no es válido.");
+                dialogo1.show();
+            }else if(!validarPassword(password, rePassword)){
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                dialogo1.setTitle("Las contraseñas no son válidas");
+                dialogo1.setMessage("Las contraseñas no coinciden o son inferior a 8 carácteres.");
+                dialogo1.show();
+            }else if(nombreCompleto.isEmpty()){
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                dialogo1.setTitle("Nombre no válido");
+                dialogo1.setMessage("El está vacío.");
+                dialogo1.show();
             }
             else
             {
-                insertOk = false;
+                byte[] data = password.getBytes(StandardCharsets.UTF_8);
+                db.execSQL("INSERT INTO usuarios (email, password, name) VALUES('"+email+"','"+Base64.encodeToString(data, Base64.DEFAULT)+"','"+nombreCompleto+"');");
+                insertOk = true;
+                CompruebaLogin();
             }
         }
         catch (Exception ex)

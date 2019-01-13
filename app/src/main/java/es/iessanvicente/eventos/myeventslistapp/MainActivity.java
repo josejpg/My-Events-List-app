@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Cursor fila = db.rawQuery("SELECT nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
         if(fila.moveToFirst())
         {
-            fila = db.rawQuery("SELECT nombre, direccion, fecha, hora, descripcion, activo FROM eventos", null);
+            fila = db.rawQuery("SELECT nombre, direccion, fecha_hora, descripcion, activo FROM eventos", null);
             evento evento = new evento(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getInt(4));
             lEventos.add(evento);
             while(fila.moveToNext())
@@ -112,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent Perfil = new Intent(getApplicationContext(), PerfilActivity.class);
+            startActivity(Perfil);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
