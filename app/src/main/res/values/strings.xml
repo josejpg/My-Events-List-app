@@ -29,4 +29,5 @@
     <string name="perfil_text_email">Email</string>
     <string name="perfil_text_psw">Contraseña</string>
     <string name="perfil_text_phone">Teléfono</string>
+    <string name="title_activity_maps">Localización del evento</string>
 </resources>

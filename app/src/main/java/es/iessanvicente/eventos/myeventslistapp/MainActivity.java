@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -95,7 +96,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             {
                 public void onItemClick(AdapterView<?> a, View v, int position, long id)
                 {
-                    //String prueba = (String) a.getAdapter().getItem(position);
+                    String selectedFromList =(listadoEventos.getItemAtPosition(position).toString());
+                    String arrayContenidoEvent[]= selectedFromList.split("\\.");
+                    Intent Map = new Intent(getApplicationContext(), MapsActivity.class);
+                    String as =arrayContenidoEvent[0];
+                    Map.putExtra("parametro", as);
+                    startActivity(Map);
+
                 }
             });
 
@@ -105,7 +112,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             {
                 public void onItemClick(AdapterView<?> a, View v, int position, long id)
                 {
-                    //String prueba = (String) a.getAdapter().getItem(position);
+                    String selectedFromList =(listadoEventosInactivos.getItemAtPosition(position).toString());
+                    String arrayContenidoEvent[]= selectedFromList.split("\\.");
+                    Intent Map = new Intent(getApplicationContext(), MapsActivity.class);
+                    String as =arrayContenidoEvent[0];
+                    Map.putExtra("parametro", as);
+                    startActivity(Map);
+
                 }
             });
         }
