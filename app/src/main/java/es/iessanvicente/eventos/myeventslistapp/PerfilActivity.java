@@ -41,6 +41,31 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        getInfoUser();
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                saveDataUser();
+            }
+        });
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        getInfoUser();
+    }
+
+    private void getInfoUser(){
         // DB Connection
         rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
         rutaDB = rutaApp + "eventosDB";
@@ -77,18 +102,6 @@ public class PerfilActivity extends AppCompatActivity {
                 avatar.setImageBitmap(Base642Bitmap(user.getAvatar()));
             }
         }
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                saveDataUser();
-            }
-        });
-
-        avatar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                takePicture();
-            }
-        });
-
     }
 
     private void takePicture() {
@@ -116,17 +129,21 @@ public class PerfilActivity extends AppCompatActivity {
         user.setPhone( String.valueOf( phone.getText() ) );
 
         try {
-            db.execSQL("UPDATE usuarios SET email = '" + user.getEmail() + "', name = '" + user.getName() + "', phone = '" + user.getPhone() + "', avatar = '" + user.getAvatar() + "'");
+            db.execSQL("UPDATE usuarios SET email = '" + user.getEmail() + "', name = '" + user.getName() + "', phone = '" + user.getPhone() + "'");
             if (!String.valueOf(psw.getText()).equals("")) {
                 byte[] data = String.valueOf(psw.getText()).getBytes(StandardCharsets.UTF_8);
                 user.setPsw(Base64.encodeToString(data, Base64.DEFAULT));
                 db.execSQL("UPDATE usuarios SET password = '" + user.getPsw() + "'");
+            }
+            if ( user.getAvatar() != null && !user.getAvatar().equals( "" )) {
+                db.execSQL("UPDATE usuarios SET avatar = '" + user.getAvatar() + "'");
             }
             result = true;
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("¡Enhorabuena!");
             dialogo1.setMessage("El usuario se ha actualizado correctamente.");
             dialogo1.show();
+            getInfoUser();
         }catch(Exception e){
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("¡Error!");
