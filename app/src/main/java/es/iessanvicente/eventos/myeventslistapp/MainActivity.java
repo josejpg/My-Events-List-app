@@ -180,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.itemAyuda)
         {
-
-
+            Intent Ayuda = new Intent(getApplicationContext(), AyudaActivity.class);
+            startActivity(Ayuda);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
