@@ -90,6 +90,8 @@ public class LoginActivity extends AppCompatActivity
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.VIBRATE,
                 Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
         };
 
         checkPermissions();

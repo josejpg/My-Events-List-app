@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 do
                 {
                     evento e = new evento(fila.getInt(0),fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4), fila.getInt(5));
-                    lDatosEventos.add(e.DatosEvento());
+                    lDatosEventos.add( e.DatosEvento() );
                 }
                 while (fila.moveToNext());
             }
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 do
                 {
                     evento e = new evento(filaInactivos.getInt(0),filaInactivos.getString(1), filaInactivos.getString(2), filaInactivos.getString(3), filaInactivos.getString(4), filaInactivos.getInt(5));
-                    lDatosEventosInactivos.add(e.DatosEvento());
+                    lDatosEventosInactivos.add( e.DatosEvento() );
                 }
                 while (filaInactivos.moveToNext());
             }
@@ -95,7 +96,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             {
                 public void onItemClick(AdapterView<?> a, View v, int position, long id)
                 {
-                    //String prueba = (String) a.getAdapter().getItem(position);
+                    String selectedFromList = ( listadoEventos.getItemAtPosition( position ).toString() );
+                    String arrayContenidoEvent[] = selectedFromList.split( "\\." );
+                    Intent Evento = new Intent( getApplicationContext(), EventoActivity.class );
+                    Integer idEvent = Integer.parseInt( arrayContenidoEvent[ 0 ] );
+                    Evento.putExtra( "idEvent", idEvent );
+                    startActivity( Evento );
+
                 }
             });
 
@@ -105,7 +112,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             {
                 public void onItemClick(AdapterView<?> a, View v, int position, long id)
                 {
-                    //String prueba = (String) a.getAdapter().getItem(position);
+                    String selectedFromList = ( listadoEventosInactivos.getItemAtPosition( position ).toString() );
+                    String arrayContenidoEvent[] = selectedFromList.split( "\\." );
+                    Intent Evento = new Intent( getApplicationContext(), EventoActivity.class );
+                    Integer idEvent = Integer.parseInt( arrayContenidoEvent[ 0 ] );
+                    Evento.putExtra( "idEvent", idEvent );
+                    startActivity( Evento );
+
                 }
             });
         }
