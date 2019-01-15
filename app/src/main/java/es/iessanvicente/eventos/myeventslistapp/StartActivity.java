@@ -13,6 +13,11 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
 public class StartActivity extends AppCompatActivity {
 
     String[] permissions;

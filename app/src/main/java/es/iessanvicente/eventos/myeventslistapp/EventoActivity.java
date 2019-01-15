@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
+
 public class EventoActivity extends AppCompatActivity {
 
     SQLiteDatabase db;

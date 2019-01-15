@@ -9,6 +9,12 @@ import android.widget.EditText;
 
 import java.util.Calendar;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
+
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
     EditText et;
