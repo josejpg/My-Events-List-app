@@ -2,6 +2,12 @@ package es.iessanvicente.eventos.myeventslistapp;
 
 import java.io.Serializable;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
+
 public class evento implements Serializable
 {
     /*

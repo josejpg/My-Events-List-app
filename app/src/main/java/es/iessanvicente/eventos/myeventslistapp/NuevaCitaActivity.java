@@ -15,6 +15,11 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
 public class NuevaCitaActivity extends AppCompatActivity {
 
     EditText nombreEvento;

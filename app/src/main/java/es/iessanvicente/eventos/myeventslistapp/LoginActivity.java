@@ -58,8 +58,10 @@ import java.util.regex.Pattern;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
  */
+
 public class LoginActivity extends AppCompatActivity
 {
     //Declaracion de variables

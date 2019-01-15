@@ -1,5 +1,11 @@
 package es.iessanvicente.eventos.myeventslistapp;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
+
 public class User {
 
     /**

@@ -24,6 +24,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     //Declaracion de variables

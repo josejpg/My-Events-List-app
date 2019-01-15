@@ -20,6 +20,13 @@ import java.nio.charset.StandardCharsets;
 
 import static es.iessanvicente.eventos.myeventslistapp.utils.*;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
+
+
 public class PerfilActivity extends AppCompatActivity {
 
     // Variables

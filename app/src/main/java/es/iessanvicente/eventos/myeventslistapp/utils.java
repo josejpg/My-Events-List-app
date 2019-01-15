@@ -6,6 +6,12 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Jose Manuel Esparcia Cañizares
+ * Jose J. Pardines Garcia
+ */
+
+
 public class utils {
 
     /**
