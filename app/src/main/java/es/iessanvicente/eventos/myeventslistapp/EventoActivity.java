@@ -82,11 +82,10 @@ public class EventoActivity extends AppCompatActivity {
             address.setText( datosEvento.getDireccion() );
             description.setText( datosEvento.getDescripcion() );
             isActive.setChecked( ( datosEvento.getActivo() == 1 ) ? true : false );
-            /*String[] dateTime = datosEvento.getFecha_hora().split( "/ /" );
+            String[] dateTime = datosEvento.getFecha_hora().split( "/ /" );
             date.setText( dateTime[ 0 ] );
-            time.setText( dateTime[ 1 ] );*/
-
-            date.setOnClickListener(new View.OnClickListener() {
+            time.setText( dateTime[ 1 ] );
+           /* date.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     MustraDialogFecha();
                 }
@@ -96,7 +95,7 @@ public class EventoActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     MustraDialogHora();
                 }
-            });
+            });*/
 
             btnUpdate.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

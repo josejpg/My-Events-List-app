@@ -118,9 +118,12 @@ public class LoginActivity extends AppCompatActivity
         }
         else
         {
-            try {
+            try
+            {
                 String rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
                 String rutaDB = rutaApp + "eventosDB";
+
+
                 db = openOrCreateDatabase( rutaDB, MODE_PRIVATE, null );
                 db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar TEXT);");
 
@@ -157,7 +160,8 @@ public class LoginActivity extends AppCompatActivity
                         activaRegistro = 0;
                     }
                 });
-            }catch(SQLiteCantOpenDatabaseException e){
+            }
+            catch(SQLiteCantOpenDatabaseException e){
                 AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
                 dialogo1.setTitle("Error al conectar con la DB");
                 dialogo1.setMessage( e.getMessage() );

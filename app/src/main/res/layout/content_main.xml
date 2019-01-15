@@ -25,9 +25,9 @@
         android:text="Listado eventos activos"/>
 
     <ListView
-    android:id="@+id/lvEventos"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+        android:id="@+id/lvEventos"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -37,12 +37,7 @@
     <ListView
         android:id="@+id/lvInactivosEventos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/tvEventoSel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="100dp"/>
 
     </LinearLayout>
 
