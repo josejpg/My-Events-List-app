@@ -89,7 +89,7 @@ public class PerfilActivity extends AppCompatActivity {
                 resultSet.getString(4),
                 resultSet.getString(5)
         );
-        db.close();
+
         // Data
         btnEdit = (ImageView) findViewById(R.id.edit);
         avatar = (ImageView) findViewById(R.id.profile);
@@ -155,7 +155,7 @@ public class PerfilActivity extends AppCompatActivity {
         }catch(Exception e){
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("¡Error!");
-            dialogo1.setMessage("Ha ocurrido un error y no se han podido actualziar los datos.");
+            dialogo1.setMessage("Ha ocurrido un error y no se han podido actualizar los datos." + e.getMessage());
             dialogo1.show();
             e.printStackTrace();
         }
