@@ -96,8 +96,6 @@ public class LoginActivity extends AppCompatActivity
                 Manifest.permission.ACCESS_COARSE_LOCATION
         };
 
-        checkPermissions();
-
         email = (EditText)findViewById(R.id.tEmail);
         password = (EditText) findViewById(R.id.tPassword);
         muestraLabelRePass = (TextView) findViewById(R.id.tvRepass);
@@ -120,55 +118,55 @@ public class LoginActivity extends AppCompatActivity
         }
         else
         {
-            String rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
-            String rutaDB = rutaApp + "eventosDB";
-            try
-            {
-                db.deleteDatabase(new File(rutaDB));
-                db = openOrCreateDatabase( rutaDB, MODE_PRIVATE,null );
-                db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar TEXT);");
+                String rutaApp = Environment.getExternalStorageDirectory() + "/Android/Data/es.miseventos.iessanvicente/";
+                String rutaDB = rutaApp + "eventosDB";
+                //try {
+                    db.deleteDatabase(new File(rutaDB));
+                    db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
+                    db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar TEXT);");
 
-                realizaLogin.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        CompruebaLogin();
-                    }
-                });
-
-                realizaRegistro.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (activaRegistro == 0) {
-                            muestraLabelRePass.setVisibility(View.VISIBLE);
-                            muestraLabelNombre.setVisibility(View.VISIBLE);
-                            cancelaRegistro.setVisibility(View.VISIBLE);
-                            realizaLogin.setVisibility(View.INVISIBLE);
-                            rePassword.setVisibility(View.VISIBLE);
-                            nombreCompleto.setVisibility(View.VISIBLE);
-                            activaRegistro = 1;
-                        } else {
-                            RealizaRegistro();
+                    realizaLogin.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            CompruebaLogin();
                         }
-                    }
-                });
+                    });
 
-                cancelaRegistro.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        muestraLabelRePass.setVisibility(View.INVISIBLE);
-                        muestraLabelNombre.setVisibility(View.INVISIBLE);
-                        cancelaRegistro.setVisibility(View.INVISIBLE);
-                        realizaLogin.setVisibility(View.VISIBLE);
-                        rePassword.setVisibility(View.INVISIBLE);
-                        nombreCompleto.setVisibility(View.INVISIBLE);
-                        activaRegistro = 0;
-                    }
-                });
-            }catch(SQLiteCantOpenDatabaseException e){
-                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
-                dialogo1.setTitle("Error al conectar con la DB");
-                dialogo1.setMessage( e.getMessage() );
-                dialogo1.show();
-                e.printStackTrace();
-                db.deleteDatabase(new File(rutaDB));
-            }
+                    realizaRegistro.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            if (activaRegistro == 0) {
+                                muestraLabelRePass.setVisibility(View.VISIBLE);
+                                muestraLabelNombre.setVisibility(View.VISIBLE);
+                                cancelaRegistro.setVisibility(View.VISIBLE);
+                                realizaLogin.setVisibility(View.INVISIBLE);
+                                rePassword.setVisibility(View.VISIBLE);
+                                nombreCompleto.setVisibility(View.VISIBLE);
+                                activaRegistro = 1;
+                            } else {
+                                RealizaRegistro();
+                            }
+                        }
+                    });
+
+                    cancelaRegistro.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            muestraLabelRePass.setVisibility(View.INVISIBLE);
+                            muestraLabelNombre.setVisibility(View.INVISIBLE);
+                            cancelaRegistro.setVisibility(View.INVISIBLE);
+                            realizaLogin.setVisibility(View.VISIBLE);
+                            rePassword.setVisibility(View.INVISIBLE);
+                            nombreCompleto.setVisibility(View.INVISIBLE);
+                            activaRegistro = 0;
+                        }
+                    });
+                /*} catch (SQLiteCantOpenDatabaseException e) {
+                    AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                    dialogo1.setTitle("Error al conectar con la DB");
+                    dialogo1.setMessage(e.getMessage());
+                    dialogo1.show();
+                    e.printStackTrace();
+                    db.deleteDatabase(new File(rutaDB));
+                }*/
+
         }
     }
 
@@ -259,7 +257,6 @@ public class LoginActivity extends AppCompatActivity
 
                 SharedPreferences.Editor editor = shared.edit();
                 editor.putBoolean("isLogged", true);
-                editor.putString("email", user.getEmail());
                 editor.commit();
                 db.close();
                 Intent MenuPrincipal = new Intent(getApplicationContext(), MainActivity.class);
