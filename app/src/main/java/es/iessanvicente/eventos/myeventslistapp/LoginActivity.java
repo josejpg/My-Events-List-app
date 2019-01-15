@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.preference.PreferenceManager;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -71,8 +72,6 @@ public class LoginActivity extends AppCompatActivity
     Button cancelaRegistro;
     SQLiteDatabase db;
     String[] permissions;
-    String rutaApp;
-    String rutaDB;
     Integer activaRegistro;
     SharedPreferences shared;
     Boolean isLogged;
@@ -82,7 +81,6 @@ public class LoginActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         permissions = new String[]
         {
@@ -108,8 +106,6 @@ public class LoginActivity extends AppCompatActivity
         realizaRegistro = (Button) findViewById(R.id.btRegister);
         cancelaRegistro = (Button) findViewById(R.id.btCancelarRegistro);
         activaRegistro = 0;
-        rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
-        rutaDB = rutaApp + "eventosDB";
 
         shared = PreferenceManager.getDefaultSharedPreferences(this);
         isLogged = shared.getBoolean( "isLogged", false );
@@ -122,51 +118,52 @@ public class LoginActivity extends AppCompatActivity
         }
         else
         {
-            db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
-            db.execSQL( "CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar VARCHAR);" );
+            try {
+                String rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
+                String rutaDB = rutaApp + "eventosDB";
+                db = openOrCreateDatabase( rutaDB, MODE_PRIVATE, null );
+                db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar TEXT);");
 
-            realizaLogin.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    CompruebaLogin();
-                }
-            });
-
-            realizaRegistro.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    if (activaRegistro == 0)
-                    {
-                        muestraLabelRePass.setVisibility(View.VISIBLE);
-                        muestraLabelNombre.setVisibility(View.VISIBLE);
-                        cancelaRegistro.setVisibility(View.VISIBLE);
-                        realizaLogin.setVisibility(View.INVISIBLE);
-                        rePassword.setVisibility(View.VISIBLE);
-                        nombreCompleto.setVisibility(View.VISIBLE);
-                        activaRegistro = 1;
+                realizaLogin.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        CompruebaLogin();
                     }
-                    else
-                    {
-                        RealizaRegistro();
-                    }
-                }
-            });
+                });
 
-            cancelaRegistro.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    muestraLabelRePass.setVisibility(View.INVISIBLE);
-                    muestraLabelNombre.setVisibility(View.INVISIBLE);
-                    cancelaRegistro.setVisibility(View.INVISIBLE);
-                    realizaLogin.setVisibility(View.VISIBLE);
-                    rePassword.setVisibility(View.INVISIBLE);
-                    nombreCompleto.setVisibility(View.INVISIBLE);
-                    activaRegistro = 0;
-                }
-            });
+                realizaRegistro.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (activaRegistro == 0) {
+                            muestraLabelRePass.setVisibility(View.VISIBLE);
+                            muestraLabelNombre.setVisibility(View.VISIBLE);
+                            cancelaRegistro.setVisibility(View.VISIBLE);
+                            realizaLogin.setVisibility(View.GONE);
+                            rePassword.setVisibility(View.VISIBLE);
+                            nombreCompleto.setVisibility(View.VISIBLE);
+                            activaRegistro = 1;
+                        } else {
+                            RealizaRegistro();
+                        }
+                    }
+                });
+
+                cancelaRegistro.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        muestraLabelRePass.setVisibility(View.GONE);
+                        muestraLabelNombre.setVisibility(View.GONE);
+                        cancelaRegistro.setVisibility(View.GONE);
+                        realizaLogin.setVisibility(View.VISIBLE);
+                        rePassword.setVisibility(View.GONE);
+                        nombreCompleto.setVisibility(View.GONE);
+                        activaRegistro = 0;
+                    }
+                });
+            }catch(SQLiteCantOpenDatabaseException e){
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                dialogo1.setTitle("Error al conectar con la DB");
+                dialogo1.setMessage( e.getMessage() );
+                dialogo1.show();
+                e.printStackTrace();
+            }
         }
     }
 
