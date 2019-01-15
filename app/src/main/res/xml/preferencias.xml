@@ -7,8 +7,7 @@
             android:summary="Activar/Desactivar audio"
             android:title="Activar audio" />
         <RingtonePreference
-            android:defaultValue=""
-            android:key="actualSound"
+            android:key="actualRingtone"
             android:title="Ringtone" />
     </PreferenceCategory>
     <PreferenceCategory android:title="GPS">
@@ -21,7 +20,7 @@
     <PreferenceCategory android:title="Sincronización">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="Activar Sincronización"
+            android:key="activeSync"
             android:summary="Activar/Desactivar Sincronización"
             android:title="Activar Sincronización" />
     </PreferenceCategory>

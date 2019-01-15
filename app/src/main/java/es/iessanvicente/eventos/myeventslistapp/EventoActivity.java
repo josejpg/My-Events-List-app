@@ -2,10 +2,12 @@ package es.iessanvicente.eventos.myeventslistapp;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,12 +37,16 @@ public class EventoActivity extends AppCompatActivity {
     EditText description;
     Button btnUpdate;
     List<String> listValues;
+    boolean isGPS;
+    SharedPreferences preferenciasGPS;
+    AlertDialog.Builder dialogo1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
-
+        preferenciasGPS = PreferenceManager.getDefaultSharedPreferences(this);
+        dialogo1 = new AlertDialog.Builder(this);
         try {
             idEvent = getIntent().getExtras().getInt("idEvent");
 
@@ -64,9 +70,20 @@ public class EventoActivity extends AppCompatActivity {
             maps.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent Map = new Intent(getApplicationContext(), MapsActivity.class);
-                    Map.putExtra("parametro", idEvent.toString());
-                    startActivity(Map);
+
+                    isGPS = preferenciasGPS.getBoolean( "activeGPS", false );
+
+                    if(isGPS)
+                    {
+                        Intent Map = new Intent(getApplicationContext(), MapsActivity.class);
+                        Map.putExtra("parametro", idEvent.toString());
+                        startActivity(Map);
+                    }
+                    else{
+                        dialogo1.setTitle( "Error con GPS" );
+                        dialogo1.setMessage( "El GPS está desactivado en las preferencias, por favor activelo y vuelva a intentarlo." );
+                        dialogo1.show();
+                    }
                 }
             });
 
