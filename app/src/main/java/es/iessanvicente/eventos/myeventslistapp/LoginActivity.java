@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
+import android.database.sqlite.SQLiteException;
 import android.preference.PreferenceManager;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -45,6 +46,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,10 +120,13 @@ public class LoginActivity extends AppCompatActivity
         }
         else
         {
+            String rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
+            String rutaDB = rutaApp + "eventosDB";
             try {
-                String rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
-                String rutaDB = rutaApp + "eventosDB";
-                db = openOrCreateDatabase( rutaDB, MODE_PRIVATE, null );
+                System.out.println( "RUTA => " + rutaApp );
+                System.out.println( "RUTA => ()" +  new File( rutaApp ).delete() );
+                new File( rutaApp ).delete();
+                db = openOrCreateDatabase( rutaApp, MODE_PRIVATE,null );
                 db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar TEXT);");
 
                 realizaLogin.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +141,7 @@ public class LoginActivity extends AppCompatActivity
                             muestraLabelRePass.setVisibility(View.VISIBLE);
                             muestraLabelNombre.setVisibility(View.VISIBLE);
                             cancelaRegistro.setVisibility(View.VISIBLE);
-                            realizaLogin.setVisibility(View.GONE);
+                            realizaLogin.setVisibility(View.INVISIBLE);
                             rePassword.setVisibility(View.VISIBLE);
                             nombreCompleto.setVisibility(View.VISIBLE);
                             activaRegistro = 1;
@@ -148,12 +153,12 @@ public class LoginActivity extends AppCompatActivity
 
                 cancelaRegistro.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        muestraLabelRePass.setVisibility(View.GONE);
-                        muestraLabelNombre.setVisibility(View.GONE);
-                        cancelaRegistro.setVisibility(View.GONE);
+                        muestraLabelRePass.setVisibility(View.INVISIBLE);
+                        muestraLabelNombre.setVisibility(View.INVISIBLE);
+                        cancelaRegistro.setVisibility(View.INVISIBLE);
                         realizaLogin.setVisibility(View.VISIBLE);
-                        rePassword.setVisibility(View.GONE);
-                        nombreCompleto.setVisibility(View.GONE);
+                        rePassword.setVisibility(View.INVISIBLE);
+                        nombreCompleto.setVisibility(View.INVISIBLE);
                         activaRegistro = 0;
                     }
                 });
@@ -163,6 +168,7 @@ public class LoginActivity extends AppCompatActivity
                 dialogo1.setMessage( e.getMessage() );
                 dialogo1.show();
                 e.printStackTrace();
+                new File( rutaDB ).delete();
             }
         }
     }

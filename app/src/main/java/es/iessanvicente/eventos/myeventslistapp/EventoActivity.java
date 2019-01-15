@@ -16,6 +16,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,8 +75,8 @@ public class EventoActivity extends AppCompatActivity {
             isActive = (Switch) findViewById(R.id.swActivo);
             nameEvent = (EditText) findViewById(R.id.editEvento);
             address = (EditText) findViewById(R.id.editDireccion);
-            date = (EditText) findViewById(R.id.editFecha);
-            time = (EditText) findViewById(R.id.editHora);
+            date = (EditText) findViewById(R.id.etFecha);
+            time = (EditText) findViewById(R.id.etHora);
             description = (EditText) findViewById(R.id.editDescription);
             btnUpdate = (Button) findViewById(R.id.btnActualiza);
 
@@ -82,9 +84,13 @@ public class EventoActivity extends AppCompatActivity {
             address.setText( datosEvento.getDireccion() );
             description.setText( datosEvento.getDescripcion() );
             isActive.setChecked( ( datosEvento.getActivo() == 1 ) ? true : false );
-            /*String[] dateTime = datosEvento.getFecha_hora().split( "/ /" );
-            date.setText( dateTime[ 0 ] );
-            time.setText( dateTime[ 1 ] );*/
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm" );
+            Date dateTime = simpleDateFormat.parse( datosEvento.getFecha_hora() );
+            android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+            System.out.println( "DATETIME => " + datosEvento.getFecha_hora() + " (DB) => " + dateTime.toString() );
+
+            date.setText( dateFormat.format( "dd/MM/yyyy", dateTime ) );
+            time.setText( dateFormat.format( "HH:mm", dateTime ) );
 
             date.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

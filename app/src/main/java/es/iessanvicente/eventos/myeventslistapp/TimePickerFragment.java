@@ -12,20 +12,32 @@ import android.widget.TimePicker;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
+    EditText et;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
+        et = (EditText) getActivity().findViewById(R.id.etHora);
+
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
+
+        if( !String.valueOf( et.getText() ).equals( "" ) ){
+            String[] split = String.valueOf( et.getText() ).split( ":" );
+            hour = Integer.parseInt( split[ 0 ] );
+            minute = Integer.parseInt( split[ 1 ] );
+        }
 
         return new TimePickerDialog(getActivity(),this, hour, minute, DateFormat.is24HourFormat(getActivity()));
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute)
     {
-        EditText et = (EditText) getActivity().findViewById(R.id.etHora);
-        et.setText(String.valueOf(hourOfDay)+":"+String.valueOf(minute));
+
+        String formatHour = ( hourOfDay < 10) ? "0" + hourOfDay : String.valueOf( hourOfDay );
+        String formatMinute = ( minute < 10) ? "0" + minute : String.valueOf( minute );
+        et.setText( formatHour + ":" + formatMinute );
 
     }
 }
