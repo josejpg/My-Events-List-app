@@ -47,7 +47,20 @@ public class StartActivity extends AppCompatActivity {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
+
             checkPermissions();
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if (isPermissions)
+        {
+            Intent LoginMenu = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(LoginMenu);
         }
     }
 
@@ -73,9 +86,6 @@ public class StartActivity extends AppCompatActivity {
                     try
                     {
                         sleep(5000);
-                        SharedPreferences.Editor editor = shared.edit();
-                        editor.putBoolean("isPermissions", true);
-                        editor.commit();
                         Intent LoginPrincipal = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(LoginPrincipal);
                     }
@@ -86,6 +96,9 @@ public class StartActivity extends AppCompatActivity {
                 }
             };
             thread.start();
+            SharedPreferences.Editor editor = shared.edit();
+            editor.putBoolean("isPermissions", true);
+            editor.commit();
 
             return false;
         }
