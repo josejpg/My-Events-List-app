@@ -12,39 +12,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/paragraph1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ayuda_lorem_ipsum" />
+            android:text="- My Event List -"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold|italic" />
 
         <TextView
-            android:id="@+id/paragraph2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/ayuda_lorem_ipsum2"
-            app:layout_constraintTop_toBottomOf="@+id/paragraph1" />
-
-        <TextView
-            android:id="@+id/paragraph3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/ayuda_lorem_ipsum3"
-            app:layout_constraintTop_toBottomOf="@+id/paragraph2" />
-
-        <TextView
-            android:id="@+id/paragraph4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ayuda_lorem_ipsum4"
-            app:layout_constraintTop_toBottomOf="@+id/paragraph3" />
-
-        <TextView
-            android:id="@+id/paragraph5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ayuda_lorem_ipsum5"
-            app:layout_constraintTop_toBottomOf="@+id/paragraph4" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="5dp"
+            android:text="Con esta aplicación se podrán crear citas y eventos con una dirección y una fecha y hora determinadas.\n\n1 - Main Activity: Muestra dos listados de citas/eventos, uno para los que están activos y otro para los que no.\n\n2 - NuevaCita Activity: Formulario de creación de un nuevo evento\n\n3 - Evento Activity: En este apartado se se podrá visualizar toda la información del evento seleccionado en el activity principal. Una vez aquí se podrán modificar sus datos o ir a Maps Activity.\n\n4 - Maps Activity: Este activity mostrará la posición del evento y del usuario.\n\n5 - Perfil: Aquí se mostrarán los datos del usuario, pudiendo editarlos y guardar los cambios pulsando el icono del lápiz.\n\n6 - Preferencias: Aquí se mostrarán las preferencias de la aplicación, pudiendo activar o desactivar distintos componentes como sonido, GPS o la sincronización en la nube." />
     </LinearLayout>
 </ScrollView>
