@@ -122,11 +122,10 @@ public class LoginActivity extends AppCompatActivity
         {
             String rutaApp = Environment.getExternalStorageDirectory()+"/Android/Data/es.miseventos.iessanvicente/";
             String rutaDB = rutaApp + "eventosDB";
-            try {
-                System.out.println( "RUTA => " + rutaApp );
-                System.out.println( "RUTA => ()" +  new File( rutaApp ).delete() );
-                new File( rutaApp ).delete();
-                db = openOrCreateDatabase( rutaApp, MODE_PRIVATE,null );
+            try
+            {
+                db.deleteDatabase(new File(rutaDB));
+                db = openOrCreateDatabase( rutaDB, MODE_PRIVATE,null );
                 db.execSQL("CREATE TABLE IF NOT EXISTS usuarios(ID INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, password VARCHAR, name VARCHAR, phone VARCHAR, avatar TEXT);");
 
                 realizaLogin.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +167,7 @@ public class LoginActivity extends AppCompatActivity
                 dialogo1.setMessage( e.getMessage() );
                 dialogo1.show();
                 e.printStackTrace();
-                new File( rutaDB ).delete();
+                db.deleteDatabase(new File(rutaDB));
             }
         }
     }
