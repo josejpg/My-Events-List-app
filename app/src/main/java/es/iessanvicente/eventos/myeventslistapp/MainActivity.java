@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try
         {
             lDatosEventos.clear();
+            lDatosEventosInactivos.clear();
             db = openOrCreateDatabase(rutaDB, MODE_PRIVATE, null);
             db.execSQL("CREATE TABLE IF NOT EXISTS eventos(ID INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, direccion VARCHAR, fecha_hora VARCHAR, descripcion VARCHAR, activo INT);");
             Cursor fila = db.rawQuery("SELECT id, nombre, direccion, fecha_hora, descripcion, activo FROM eventos WHERE activo = 1", null);
